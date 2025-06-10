@@ -1,3 +1,6 @@
+--Creating database--
+create database Tours_and_Travels_Company
+
 --Creating Tables--
 CREATE TABLE USERS (
     UserID INT PRIMARY KEY,
@@ -149,7 +152,7 @@ TableName VARCHAR(100),
 ActionType VARCHAR(10), -- 'INSERT', 'UPDATE', 'DELETE'
 ActionDate DATETIME DEFAULT GETDATE(),
 PerformedBy NVARCHAR(128) DEFAULT SYSTEM_USER,
-RecordData NVARCHAR(MAX) -- Will store the changed row(s) as JSON or text
+RecordData NVARCHAR(MAX) 
 );
 
 --Creating views--
@@ -488,3 +491,157 @@ VALUES
 ('SP_Report_GroupDetails', 'CREATE', @Yesterday, SYSTEM_USER, 'Stored procedure to generate a detailed report for a specific travel group.'),
 ('SP_Report_MonthlyProfit', 'CREATE', @Yesterday, SYSTEM_USER, 'Stored procedure to generate a monthly net profit report.'),
 ('SP_Report_YearlyProfit', 'CREATE', @Yesterday, SYSTEM_USER, 'Stored procedure to generate a yearly net profit summary.');
+
+
+--Implementing indexes--
+
+--Customers--
+CREATE NONCLUSTERED INDEX IX_Customers_FullName
+ON CUSTOMERS (FullName);
+
+CREATE NONCLUSTERED INDEX IX_Customers_GroupID
+ON CUSTOMERS (GroupID);
+
+CREATE NONCLUSTERED INDEX IX_Customers_ServiceType
+ON CUSTOMERS (ServiceType);
+
+--Expenses--
+CREATE NONCLUSTERED INDEX IX_Expenses_GroupID
+ON EXPENSES (GroupID);
+
+CREATE NONCLUSTERED INDEX IX_Expenses_Category
+ON EXPENSES (Category);
+
+CREATE NONCLUSTERED INDEX IX_Expenses_Date
+ON EXPENSES (Date);
+
+--Flights--
+CREATE NONCLUSTERED INDEX IX_Flights_Airline
+ON FLIGHTS (Airline);
+
+CREATE NONCLUSTERED INDEX IX_Flights_Country
+ON FLIGHTS (Country);
+
+CREATE NONCLUSTERED INDEX IX_Flights_TicketPrice
+ON FLIGHTS (TicketPrice);
+
+CREATE NONCLUSTERED INDEX IX_Flights_DiscountApplied
+ON FLIGHTS (DiscountApplied);
+
+--Hotels--
+CREATE NONCLUSTERED INDEX IX_Hotels_CustomerID 
+    ON HOTELS (CustomerID);
+
+CREATE NONCLUSTERED INDEX IX_Hotels_VendorID 
+    ON HOTELS (VendorID);
+
+CREATE NONCLUSTERED INDEX IX_Hotels_Country_Category 
+    ON HOTELS (Country, Category);
+
+CREATE NONCLUSTERED INDEX IX_Hotels_CheckInDate 
+    ON HOTELS (CheckInDate);
+
+CREATE NONCLUSTERED INDEX IX_Hotels_CheckOutDate 
+    ON HOTELS (CheckOutDate);
+
+--Meals--
+CREATE NONCLUSTERED INDEX IX_Meals_ServiceType
+ON MEALS (ServiceType);
+
+CREATE NONCLUSTERED INDEX IX_Meals_CustomerID
+ON MEALS (CustomerID);
+
+CREATE NONCLUSTERED INDEX IX_Meals_VendorID
+ON MEALS (VendorID);
+
+--Profit Reports--
+CREATE NONCLUSTERED INDEX IX_ProfitReports_GroupID
+ON PROFITREPORTS (GroupID);
+
+CREATE NONCLUSTERED INDEX IX_ProfitReports_Month_Year
+ON PROFITREPORTS (Month, Year);
+
+--Syria Tickets--
+CREATE NONCLUSTERED INDEX IX_SyriaTickets_CustomerID
+ON SYRIATICKETS (CustomerID);
+
+CREATE NONCLUSTERED INDEX IX_SyriaTickets_Airline
+ON SYRIATICKETS (Airline);
+
+CREATE NONCLUSTERED INDEX IX_SyriaTickets_ProfitMargin
+ON SYRIATICKETS (ProfitMargin);
+
+CREATE NONCLUSTERED INDEX IX_SyriaTickets_PurchasePrice 
+ON SYRIATICKETS (PurchasePrice);
+
+--Ticket Price History--
+CREATE NONCLUSTERED INDEX IX_TicketHistory_TicketID
+ON TICKET_PRICING_HISTORY (TicketID);
+
+CREATE NONCLUSTERED INDEX IX_TicketHistory_ChangeDate
+ON TICKET_PRICING_HISTORY (ChangeDate);
+
+--Transport--
+CREATE NONCLUSTERED INDEX IX_Transport_CustomerID
+ON TRANSPORT (CustomerID);
+
+CREATE NONCLUSTERED INDEX IX_Transport_TransportType
+ON TRANSPORT (TransportType);
+
+CREATE NONCLUSTERED INDEX IX_Transport_VendorID
+ON TRANSPORT (VendorID);
+
+-- Travel Groups--
+CREATE NONCLUSTERED INDEX IX_TravelGroups_GroupName 
+ON TRAVELGROUPS (GroupName);
+
+CREATE NONCLUSTERED INDEX IX_TravelGroups_DestinationCountry 
+ON TRAVELGROUPS (DestinationCountry);
+
+CREATE NONCLUSTERED INDEX IX_TravelGroups_StartDate 
+ON TRAVELGROUPS (StartDate);
+
+CREATE NONCLUSTERED INDEX IX_TravelGroups_EndDate 
+ON TRAVELGROUPS (EndDate);
+
+CREATE NONCLUSTERED INDEX IX_TravelGroups_Status 
+ON TRAVELGROUPS (Status);
+
+
+-- Users--
+CREATE UNIQUE NONCLUSTERED INDEX IX_Users_Username 
+ON USERS (Username);
+
+CREATE NONCLUSTERED INDEX IX_Users_Role 
+ON USERS (Role);
+
+
+-- VENDORS
+CREATE UNIQUE NONCLUSTERED INDEX IX_Vendors_VendorName 
+ON VENDORS (VendorName);
+
+CREATE NONCLUSTERED INDEX IX_Vendors_ServiceType 
+ON VENDORS (ServiceType);
+
+CREATE NONCLUSTERED INDEX IX_Vendors_Country 
+ON VENDORS (Country);
+
+
+-- VISAS
+CREATE NONCLUSTERED INDEX IX_Visas_CustomerID 
+ON VISAS (CustomerID);
+
+CREATE NONCLUSTERED INDEX IX_Visas_Country 
+ON VISAS (Country);
+
+CREATE NONCLUSTERED INDEX IX_Visas_VisaStatus 
+ON VISAS (VisaStatus);
+
+CREATE NONCLUSTERED INDEX IX_Visas_ApplicationDate 
+ON VISAS (ApplicationDate);
+
+CREATE NONCLUSTERED INDEX IX_Visas_ApprovalDate 
+ON VISAS (Approvaldate);
+
+CREATE NONCLUSTERED INDEX IX_Processing_Company 
+ON VISAS (ProcessingCompany);
